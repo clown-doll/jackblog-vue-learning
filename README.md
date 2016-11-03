@@ -26,5 +26,5 @@ react native 版：[https:\/\/github.com\/jackhutu\/jackblog-react-native-redux]
 
 版本非常多，很值得学习。
 
-这次主要学习web客户端VUE的版本。后续代码的解析，纯属个人简介，有误之处尽请谅解。也欢迎讨论。
+这次主要学习web客户端VUE的版本。后续代码的解析，纯属个人见解，有误之处尽请谅解。也欢迎讨论。
 
