@@ -6,11 +6,11 @@ Jackblog 是使用 Node.js + MongoDB + 其它客户端框架开发的个人博�
 
 ### 服务端有：
 
-express版：[https:\/\/github.com\/jackhutu\/jackblog-api-express](https://github.com/jackhutu/jackblog-api-express) 
+express版：[https:\/\/github.com\/jackhutu\/jackblog-api-express](https://github.com/jackhutu/jackblog-api-express)
 
-koa版：[https:\/\/github.com\/jackhutu\/jackblog-api-koa](https://github.com/jackhutu/jackblog-api-koa) 
+koa版：[https:\/\/github.com\/jackhutu\/jackblog-api-koa](https://github.com/jackhutu/jackblog-api-koa)
 
-### web客户端有： 
+### web客户端有：
 
 angular1.x版：[https:\/\/github.com\/jackhutu\/jackblog-angular1](https://github.com/jackhutu/jackblog-angular1)
 
@@ -24,9 +24,7 @@ vue 版：[https:\/\/github.com\/jackhutu\/jackblog-vue](https://github.com/jack
 
 react native 版：[https:\/\/github.com\/jackhutu\/jackblog-react-native-redux](https://github.com/jackhutu/jackblog-react-native-redux)
 
-
-
 版本非常多，很值得学习。
 
-这次主要学习web客户端VUE的版本。
+这次主要学习web客户端VUE的版本。后续代码的解析，纯属个人简介，有误之处尽请谅解。也欢迎讨论。
 

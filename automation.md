@@ -68,7 +68,9 @@ webpack-dev-server 是一个小型的静态文件服务，使用它可以为webp
 
 ### 主要任务
 
-**serve**
+**serve任务**
+
+`server` 任务主要是启动 `webpack-dev-server` ，开发环境下能够文件修改，自动刷新
 
 ```
 gulp.task('serve', function() {
@@ -91,7 +93,7 @@ gulp.task('serve', function() {
         stats: {
             colors: true // 终端中输出结果为彩色
         }
-    }).listen(DEV_PORT, 'localhost', function(err) { // 监听端口
+    }).listen(DEV_PORT, 'localhost', function(err) { // 开发环境，监听端口
         if (err) throw new gutil.PluginError('webpack-dev-server', err); // 错误捕获
         gutil.log('[webpack-dev-server]', '==> 🌎  http://localhost:' + DEV_PORT); // 打印信息
         open('http://localhost:' + DEV_PORT); // 打开客户端 web 页面
@@ -109,7 +111,15 @@ if (process.env.NODE_ENV === 'production') {
 }
 ```
 
-**build**
+执行 `gulp serve` 命令：（省略构建过程打印信息）
+
+![](/assets/gulp-serve.png)
+
+同时，监听各文件，在开发过程中实时编译刷新。
+
+**build任务**
+
+`build` 任务主要作用就是打包构建：
 
 ```
 gulp.task('build', gulpSequence('clean','webpack:dist'));
@@ -144,6 +154,39 @@ gulp.task('set-env-prod', function() {
 ```
 
 然后再执行 webpack 任务，利用 webpack 进行打包构建：
+
+```
+gulp.task('webpack', function(callback) {
+    // 获取 webpack 配置对象
+    var config = require('./webpack.config');
+    // 启动 webpack
+    webpack(config, function(err, stats) {
+        if (err) throw new gutil.PluginError("webpack", err);
+        gutil.log("[webpack]", stats.toString({
+            // output options
+        }));
+        callback();
+    })
+});
+```
+
+webpack 的相关配置，后面会具体介绍。
+
+执行 `gulp build` 命令：（省略构建过程打印信息）
+
+![](/assets/gulp-build1.png)
+
+![](/assets/gulp-build2.png)
+
+**serve:dist任务**
+
+`serve:dist` 任务主要用于开发环境，在构建的基础上，加上代码监控和自动重启服务器的功能
+
+```
+gulp.task('serve:dist',gulpSequence('build','nodemon'));
+```
+
+nodemon 任务用来监控源代码的任何变化和自动重启服务器：
 
 
 
