@@ -1,4 +1,4 @@
-# 目录及整体结构
+# 目录及项目结构
 
 ### 目录结构
 
@@ -28,6 +28,14 @@
 ├── webpack-config.prod.js   // 生产环境Webpack 配置文件
 .
 ```
+
+### 项目结构
+
+这边稍微梳理了下整个项目的结构：
+
+![](/assets/lc.png)
+
+图片看的不够清晰，可以在[这里](https://www.processon.com/view/5819c825e4b06e7dcfd2ae2a)看完整结构。
 
 
 
