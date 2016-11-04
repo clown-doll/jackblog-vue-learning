@@ -30,39 +30,39 @@ var nodemon = require('gulp-nodemon');
 var open = require('open');
 ```
 
-**[Path](https://nodejs.org/dist/latest-v6.x/docs/api/path.html)**
+[**Path**](https://nodejs.org/dist/latest-v6.x/docs/api/path.html)
 
 Path 是 node.js 的原生模块，用于处理文件路径。
 
 gulpfile.js 里主要是用到 `path.join([...paths])` 方法，用于连接路径。该方法的主要用途在于，会正确使用当前系统的路径分隔符，Unix系统是 "\/"，Windows系统是 "\"。
 
-**[gulp-util](https://www.npmjs.com/package/gulp-util)**
+[**gulp-util**](https://www.npmjs.com/package/gulp-util)
 
 gulp-util 是 gulp 常用的工具库，其中最常用的应该就是 log 了，该方法支持传入多个参数，打印结果会将多个参数用空格连接起来。
 
 在这个项目中，还用到了 gulp-util 的 PluginError 类，将错误加上插件名字作为前缀，帮助定位错误。
 
-[**gulp-env**](https://www.npmjs.com/package/gulp-env)
+**[gulp-env](https://www.npmjs.com/package/gulp-env)**
 
 gulp-env 用于定义环境变量。
 
-[**gulp-sequence**](https://www.npmjs.com/package/gulp-sequence)
+**[gulp-sequence](https://www.npmjs.com/package/gulp-sequence)**
 
 gulp 的任务的执行是异步的，默认将并行运行所有任务。如果任务间有前后依赖关系，可能会导致错误。gulp-sequence 插件能很好的解决这个问题，它提供了相应的方法，让我们能按顺序执行多个 gulp 任务。
 
-[**gulp-nodemon**](https://www.npmjs.com/package/gulp-nodemon)
+**[gulp-nodemon](https://www.npmjs.com/package/gulp-nodemon)**
 
 gulp-nodemon 用于重启服务器的插件 。它基本上跟普通的 nodemon 工具一样，只不过是针对 gulp 任务的。
 
-**[del](https://www.npmjs.com/package/del)**
+[**del**](https://www.npmjs.com/package/del)
 
 del 用于删除文件夹里的内容。通常在重新构建的时候，会先删除原先文件夹里的内容，再进行构建。
 
-**[open](https://www.npmjs.com/package/open)**
+[**open**](https://www.npmjs.com/package/open)
 
 open 用于打开文件或链接。
 
-[**webpack-dev-server**](https://www.npmjs.com/package/webpack-dev-server)
+**[webpack-dev-server](https://www.npmjs.com/package/webpack-dev-server)**
 
 webpack-dev-server 是一个小型的静态文件服务，使用它可以为webpack打包生成的资源文件提供Web服务，进行自动刷新和热替换。[这里](http://www.jianshu.com/p/941bfaf13be1)有关于这个插件更详细的解释，大家可以去看看。
 
@@ -236,4 +236,120 @@ app.listen(port, function(err) {
 ## webpack.config.dev.js
 
 `webpack.config.dev.js` 是开发环境下 webpack 的配置文件。
+
+这边默认大家对 webpack 有所了解，就不做具体说明，只对每个模块做个解释。如果对 webpack 还不是很清晰的，可以查看这边的[入门教程](http://www.cnblogs.com/vajoy/p/4650467.html)以及阮一峰写的 [webpack 学习的 demo](https://github.com/ruanyf/webpack-demos)。
+
+在这个项目中，开发环境下 webpack 主要做了以下几件事情：
+
+* 利用加载器编译处理 js、css、图片、vue文件等
+
+* 自动生成 html 文件
+
+* 独立打包样式文件
+
+
+```
+var path = require('path'); // node原生模块，处理文件路径
+var webpack = require('webpack'); // 引入webpack
+var HtmlWebpackPlugin = require('html-webpack-plugin'); // 生成html文件插件
+var ExtractTextPlugin = require('extract-text-webpack-plugin'); // 独立打包样式文件插件
+
+module.exports = {
+    // 开启source-map
+    // http://www.cnblogs.com/hhhyaaon/p/5657469.html
+    devtool: 'eval-source-map', 
+    debug: true,
+    // 入口文件配置
+    entry: [
+        './src/index'  
+    ],
+    // 输出文件配置
+    output: {
+        path: process.cwd(), // 返回进程的当前目录（绝对路径）
+        filename: 'bundle.js',
+        publicPath: '/'
+    },
+    plugins: [
+        // 优化插件,为组件分配ID，通过这个插件webpack可以分析和优先考虑使用最多的模块，并为它们分配最小的ID
+        new webpack.optimize.OccurenceOrderPlugin(),
+        // 热替换,结合webpack-dev-server
+        new webpack.HotModuleReplacementPlugin(),
+        // 用来跳过编译时出错的代码并记录，使编译后运行时的包不会发生错误
+        new webpack.NoErrorsPlugin(),
+        // 生成html文件
+        new HtmlWebpackPlugin({
+            favicon: path.join(__dirname, 'src/favicon.ico'),
+            title: "Jackblog vue版",
+            template: path.join(__dirname, 'src/index.html'),
+            inject: true
+        }),
+        // 独立css文件
+        new ExtractTextPlugin('[hash:8].style.css', {
+            allChunks: true
+        })
+    ],
+    module: {
+        // 在loaders执行前处理
+        preLoaders: [{
+            test: /\.js$/,
+            loader: "eslint-loader", // eslint校验
+            exclude: /node_modules/
+        }],
+        // 处理器
+        loaders: [
+        // 解析.vue文件
+        {
+            test: /\.vue$/,
+            loader: 'vue', 
+            include: path.join(__dirname, 'src')
+        }, 
+        // 转化ES6的语法
+        {
+            test: /\.js$/,
+            loader: 'babel', 
+            exclude: /node_modules|vue\/dist|vue-hot-reload-api|vue-router\/|vue-loader/
+        }, 
+        // 解析并独立样式
+        {
+            test: /\.css$/,
+            loader: ExtractTextPlugin.extract('style-loader', 'css-loader?sourceMap') 
+        }, 
+        // 图片转化
+        {
+            test: /\.(jpe?g|png|gif)$/i,
+            loaders: [ 
+                'url?limit=10000&name=images/[hash:8].[name].[ext]',
+                'image-webpack?{progressive:true, optimizationLevel: 7, interlaced: false, pngquant:{quality: "65-90", speed: 4}}'
+            ]
+        }, 
+        // 字体处理
+        {
+            test: /\.(woff|woff2|ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+            loader: 'url?limit=10000&name=fonts/[hash:8].[name].[ext]'
+        }]
+    },
+    // vue文件配置
+    vue: {
+        loaders: {
+            js: 'babel!eslint'
+        }
+    },
+    // eslint配置
+    eslint: {
+        configFile: './.eslintrc.json'
+    },
+    resolve: {
+        // 默认module查找路径
+        root: path.resolve(__dirname, 'node_modules'), 
+        // require时省略的扩展名，如：require('module') 不需要module.js
+        extensions: ['', '.js', '.vue', '.scss']
+    }
+}
+```
+
+
+
+
+
+
 
