@@ -30,39 +30,39 @@ var nodemon = require('gulp-nodemon');
 var open = require('open');
 ```
 
-**[Path](https://nodejs.org/dist/latest-v6.x/docs/api/path.html)**
+[**Path**](https://nodejs.org/dist/latest-v6.x/docs/api/path.html)
 
 Path 是 node.js 的原生模块，用于处理文件路径。
 
 gulpfile.js 里主要是用到 `path.join([...paths])` 方法，用于连接路径。该方法的主要用途在于，会正确使用当前系统的路径分隔符，Unix系统是 "\/"，Windows系统是 "\"。
 
-**[gulp-util](https://www.npmjs.com/package/gulp-util)**
+[**gulp-util**](https://www.npmjs.com/package/gulp-util)
 
 gulp-util 是 gulp 常用的工具库，其中最常用的应该就是 log 了，该方法支持传入多个参数，打印结果会将多个参数用空格连接起来。
 
 在这个项目中，还用到了 gulp-util 的 PluginError 类，将错误加上插件名字作为前缀，帮助定位错误。
 
-[**gulp-env**](https://www.npmjs.com/package/gulp-env)
+**[gulp-env](https://www.npmjs.com/package/gulp-env)**
 
 gulp-env 用于定义环境变量。
 
-[**gulp-sequence**](https://www.npmjs.com/package/gulp-sequence)
+**[gulp-sequence](https://www.npmjs.com/package/gulp-sequence)**
 
 gulp 的任务的执行是异步的，默认将并行运行所有任务。如果任务间有前后依赖关系，可能会导致错误。gulp-sequence 插件能很好的解决这个问题，它提供了相应的方法，让我们能按顺序执行多个 gulp 任务。
 
-[**gulp-nodemon**](https://www.npmjs.com/package/gulp-nodemon)
+**[gulp-nodemon](https://www.npmjs.com/package/gulp-nodemon)**
 
 gulp-nodemon 用于重启服务器的插件 。它基本上跟普通的 nodemon 工具一样，只不过是针对 gulp 任务的。
 
-**[del](https://www.npmjs.com/package/del)**
+[**del**](https://www.npmjs.com/package/del)
 
 del 用于删除文件夹里的内容。通常在重新构建的时候，会先删除原先文件夹里的内容，再进行构建。
 
-**[open](https://www.npmjs.com/package/open)**
+[**open**](https://www.npmjs.com/package/open)
 
 open 用于打开文件或链接。
 
-[**webpack-dev-server**](https://www.npmjs.com/package/webpack-dev-server)
+**[webpack-dev-server](https://www.npmjs.com/package/webpack-dev-server)**
 
 webpack-dev-server 是一个小型的静态文件服务，使用它可以为webpack打包生成的资源文件提供Web服务，进行自动刷新和热替换。[这里](http://www.jianshu.com/p/941bfaf13be1)有关于这个插件更详细的解释，大家可以去看看。
 
@@ -376,7 +376,62 @@ output: {
 }
 ```
 
-增加了 `hash` 处理。看过其他案例，使用 `chunkhash` 的居多。`chunkhash` 是根据具体模块文件的内容计算所得的 `hash` 值；`hash` 是项目总体文件的 `hash` 值。二者更多的区别，可以查看[这篇文章](http://www.cnblogs.com/ihardcoder/p/5623411.html)。 
+增加了 `hash` 处理。看过其他案例，使用 `chunkhash` 的居多。`chunkhash` 是根据具体模块文件的内容计算所得的 `hash` 值；`hash` 是项目总体文件的 `hash` 值。二者更多的区别，可以查看[这篇文章](http://www.cnblogs.com/ihardcoder/p/5623411.html)。
+
+**webpack.DefinePlugin**
+
+某些情况，我们需要在页面中输出开发调试内容，但是又不想让这些调试内容在发布的时候泄露出去，那么我们就可以利用 webpack.DefinePlugin 这个插件来处理这个问题：
+
+```
+new webpack.DefinePlugin({
+    'process.env': {
+        'NODE_ENV': JSON.stringify('production')
+    }
+})
+```
+
+**webpack.optimize.UglifyJsPlugin**
+
+通常我们会压缩打包的文件：
+
+```
+new webpack.optimize.UglifyJsPlugin({
+    compress: {
+        warnings: false
+    }
+})
+```
+
+**webpack.optimize.CommonsChunkPlugin**
+
+公共模块没有必要重复打包，因此 webpack 也有对应的插件智能提取公共部分，对应的配置如下：
+
+```
+new webpack.optimize.CommonsChunkPlugin({
+    name: "vendor",
+    minChunks: Infinity // 提取所有entry依赖模块
+})
+```
+
+name 指定生成文件的名字，默认是 common.js，minChunks 公共模块被使用的最小次数，如设置为3，则表示同一个模块只有被3个以外的页面同时引用才会被提取出来作为公共模块。
+
+**自动生成html**
+
+自动生成 html 部分，生产环境下也做了更多的优化：
+
+```
+new HtmlWebpackPlugin({
+    favicon: path.join(__dirname, 'src/favicon.ico'),
+    title: "Jackblog vue版",
+    template: path.join(__dirname, 'src/index.html'), //模板文件
+    inject: 'body',
+    hash: false, //为静态资源生成hash值
+    minify: { //压缩HTML文件
+        removeComments: false, //移除HTML中的注释
+        collapseWhitespace: true //删除空白符与换行符
+    }
+})
+```
 
 
 
