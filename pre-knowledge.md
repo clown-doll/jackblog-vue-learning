@@ -28,7 +28,5 @@ Vuex 通过汇总应用的状态管理于一处，避免应用规模大的情况
 
 ![](/assets/vuex.png)
 
-
-
-
+可以查看 github 上中文 API [简明教程](https://github.com/vuejs/vuex/blob/1.0/docs/zh-cn/tutorial.md)里的例子，对照上面的图形，再理解下对应的流程。
 
