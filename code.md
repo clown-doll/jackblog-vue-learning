@@ -39,7 +39,7 @@ const router = new VueRouter({
 });
 ```
 
-更多的配置参数，可以查看 [API](https://github.com/vuejs/vue-router/blob/1.0/docs/zh-cn/options.md) 。
+更多的配置参数，可以查看 [官方API](https://github.com/vuejs/vue-router/blob/1.0/docs/zh-cn/options.md) 。
 
 **定义路由映射表**
 
@@ -108,5 +108,13 @@ import { sync } from 'vuex-router-sync'
 sync(store, router)
 ```
 
+## 自定义过滤器
 
+Vue.js 使用 `Vue.filter()` 注册自定义过滤器，它接收两个参数，过滤器ID和过滤器函数，具体可查看[官方 API](https://vuejs.org.cn/guide/custom-filter.html) 。
+
+这里作者定义了两个过滤器，用于时间格式化：
+
+```
+
+```
 
