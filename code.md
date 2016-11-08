@@ -88,5 +88,25 @@ export default function(router) {
 
 在这个文件中，通过 `export default` 输出模块，以供 index.js 引用。从上面的路由映射表也能够看出我们整个项目的一个结构，后续我们将按照浏览顺序依次讲解。
 
+**启动应用**
+
+一切配置就绪后，我们就可以启动我们的应用了。`router.start()` 将帮助我们实现：
+
+```
+router.start(Vue.extend(App), '#root');
+```
+
+这样，路由器会创建一个 App 实例，并且挂载到 `#root` 元素上。
+
+## 路由状态管理
+
+前面有提到过，我们使用 vuex-router-sync 插件帮助我们管理路由状态，从而将 vue-router 和 vuex 集成。它主要做的事情就是：将 vue-router 的状态放到 vuex 的 state 中，这样就可以通过改变 state 来进行路由的操作。
+
+```
+import { sync } from 'vuex-router-sync'
+
+sync(store, router)
+```
+
 
 
