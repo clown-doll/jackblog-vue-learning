@@ -24,9 +24,13 @@ Jackblog-Vue 这个项目路由是使用 1.0 版本的，这里是[中文版本�
 Vue.use(VueRouter);  
 ```
 
+
+
 **定义路由映射表**
 
-Vue-router 插件使用 `router.map()` 方法定义路由。在中大型项目中通常会将路由映射表独立出来，我们这个项目也是这样的：
+Vue-router 插件使用 `router.map()` 方法定义路由。
+
+在中大型项目中通常会将路由映射表独立出来，我们这个项目也是这样的：
 
 ```
 // routes.js
@@ -64,23 +68,7 @@ export default function(router) {
 
 在这个文件中，通过 `export default` 输出模块，以供 index.js 引用。从上面的路由映射表也能够看出我们整个项目的一个结构，后续我们将按照浏览顺序依次讲解。
 
-**创建路由实例**
 
-接下来，我们就应该创建路由实例，同时我们还可以自定义路由器的行为：
-
-```
-const router = new VueRouter({
-    history: true, // 启用 HTML5 history 模式
-    saveScrollPosition: true, // 当用户点击后退按钮时，重置页面的滚动位置
-    suppressTransitionError: true // 在场景切换钩子函数中发生的异常会被吞掉
-});
-```
-
-更多的配置参数，可以查看 [API](https://github.com/vuejs/vue-router/blob/1.0/docs/zh-cn/options.md) 。
 
 传入路由映射配置
-
-
-
-
 
