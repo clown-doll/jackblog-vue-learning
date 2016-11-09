@@ -98,6 +98,8 @@ router.start(Vue.extend(App), '#root');
 
 这样，路由器会创建一个 App 实例，并且挂载到 `#root` 元素上。
 
+回忆下前面 webpack 配置的时候，是不是有提到过用于生成 html 页面的模版（src\/index.html）？这个模版就是一个基础的 html 文档，其 body 元素里有一个主要的元素，即 `id` 为 `root` 的元素，后续我们其他页面都将挂载到这个元素上。
+
 ## 路由状态管理
 
 前面有提到过，我们使用 vuex-router-sync 插件帮助我们管理路由状态，从而将 vue-router 和 vuex 集成。它主要做的事情就是：将 vue-router 的状态放到 vuex 的 state 中，这样就可以通过改变 state 来进行路由的操作。
@@ -168,6 +170,4 @@ exports.formatDate = time => {
     return year + '.' + mathon + '.' + day + ' ' + hours + ':' + minutes
 }
 ```
-
-
 
