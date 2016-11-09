@@ -22,7 +22,7 @@ Vue.js 项目中的所有文件都是以组件的形式出现，每个组件就�
 <template>
     <!-- 页面总体框架 -->
     <div class="top-box">
-        <!-- 侧边栏 -->
+        <!-- 导航栏 -->
         <Navbar></Navbar>
         <!-- 主体部分 -->
         <router-view></router-view>

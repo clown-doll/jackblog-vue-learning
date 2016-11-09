@@ -6,6 +6,7 @@
 * [自动化配置](automation.md)
 * [前导知识概览](pre-knowledge.md)
 * [源码分析](code.md)
-  * [总体框架](/frame.md)
+  * [总体框架](frame.md)
+  * [导航栏](/navbar.md)
 
 
