@@ -177,6 +177,8 @@ Vue.http.interceptors.push((request, next)=>{
 })
 
 export const UserResource = Vue.resource(API_ROOT + 'users{/id}')
-
+...
 ```
+
+
 
