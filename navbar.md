@@ -116,10 +116,6 @@ beforeCompile(){
 
 **登陆判断**
 
-
-
-**用户数据获取**
-
 ```
 // Navbar.vue
 
@@ -133,6 +129,24 @@ created (){
 }
 ...
 ```
+
+```
+// ../vuex/modules/auth.js
+
+...
+import { getCookie } from '../../utils/authService';
+
+...
+const state = {
+    token: getCookie('token') || null,
+    user: null
+}; 
+...
+```
+
+这里将用户登录状态存储到 cookie ，创建实例后，就去判断对应的值，如果不为空，说明用户登录过，则开始下面的过程——获取用户数据。
+
+**用户数据获取**
 
 ```
 // ../vuex/actions.js
