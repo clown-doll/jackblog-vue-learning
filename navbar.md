@@ -112,7 +112,27 @@ beforeCompile(){
 
 ### 登录状态认证
 
-整个登录状态的流程处理跟上面浏览模式的流程是一样的，就不再多做说明。这里需要作说明的就是 API 数据的获取。
+整个登录状态的流程处理跟上面浏览模式的流程是一样的，就不再多做说明。这里需要作说明的是登录判断，及用户数据的获取。
+
+**登陆判断**
+
+
+
+**用户数据获取**
+
+```
+// Navbar.vue
+
+...
+created (){
+    // 在实例创建后调用
+    // 如果用户有登陆，就调用用户信息
+    if(this.auth.token){
+        this.getUserInfo()
+    }
+}
+...
+```
 
 ```
 // ../vuex/actions.js
@@ -179,6 +199,4 @@ Vue.http.interceptors.push((request, next)=>{
 export const UserResource = Vue.resource(API_ROOT + 'users{/id}')
 ...
 ```
-
-
 
