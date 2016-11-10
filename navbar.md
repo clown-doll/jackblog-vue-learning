@@ -148,11 +148,35 @@ getMe: function () {
 
 在 resources.js 里利用 [vue-resource](https://github.com/pagekit/vue-resource) 插件，通过 XMLHttpRequest 或 JSONP 发起请求并处理响应：
 
+```
+import Vue from 'vue'
+import VueResource from 'vue-resource'
+import {API_ROOT} from '../config'
+import { getCookie,signOut } from '../utils/authService'
 
+Vue.use(VueResource)
 
+// HTTP相关
+Vue.http.options.crossOrigin = true
+Vue.http.options.credentials = true
 
+// 拦截器 —— 在请求发送前和发送请求后做一些处理
+Vue.http.interceptors.push((request, next)=>{
+  // 这里对请求体进行处理（请求发送前的处理逻辑）
+  request.headers = request.headers || {}
+  if (getCookie('token')) {
+    request.headers.Authorization = 'Bearer ' + getCookie('token').replace(/(^\")|(\"$)/g, '')
+  }
+  next((response) => {
+    // 这里可以对响应的结果进行处理（请求发送后的处理逻辑）
+    if (response.status === 401) {
+      signOut()
+      window.location.pathname = '/login'
+    }
+  })
+})
 
+export const UserResource = Vue.resource(API_ROOT + 'users{/id}')
 
-
-
+```
 
