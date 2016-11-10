@@ -29,15 +29,85 @@
 我们的组建定一个了这个方法：
 
 ```
+...
 methods: {
     changeMode(){
         this.changeStyleMode()
         document.body.className = this.styleMode
     }
 }
+...
 ```
 
 这里就涉及到我们前面章节提到的 vuex 状态管理，浏览模式是各组件公用的一个状态。
+
+this.changeStyleMode\(\) 是哪来的呢？
+
+```
+import { changeStyleMode,logout,getUserInfo } from '../vuex/actions' 
+
+export default {
+    ...
+    vuex:{
+        ...
+        actions:{
+          changeStyleMode,
+          ...
+        }
+    },
+    ...
+}
+```
+
+
+
+Vuex actions 是用于分发 mutations 的函数。它不会直接对 store 做修改，通过 dispatch 一个类型为 `CHANGE_STYLE_MODE` 的 mutation 来做修改
+
+```
+// ../vuex/actions.js
+
+...
+export const changeStyleMode = ({dispatch}) => {
+    dispatch(types.CHANGE_STYLE_MODE)
+}
+...
+```
+
+```
+// ../vuex/modules/global.val.js
+
+...
+[CHANGE_STYLE_MODE](state){
+    state.styleMode = (state.styleMode === 'day-mode')?'night-mode':'day-mode'
+    saveCookie('styleMode', state.styleMode)
+}
+...
+```
+
+组件通过 getter 从 store 里读取数据：
+
+```
+export default {
+    ...
+    vuex:{
+        // 获取值
+        getters:{
+            ...
+            styleMode: state => state.globalVal.styleMode
+        }
+        ...
+    }
+    ...
+}
+```
+
+最终页面显示我们需要的浏览模式。
+
+
+
+
+
+
 
 
 
