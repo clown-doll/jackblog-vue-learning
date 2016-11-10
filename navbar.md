@@ -59,8 +59,6 @@ export default {
 }
 ```
 
-
-
 Vuex actions 是用于分发 mutations 的函数。它不会直接对 store 做修改，通过 dispatch 一个类型为 `CHANGE_STYLE_MODE` 的 mutation 来做修改
 
 ```
@@ -87,8 +85,7 @@ export const changeStyleMode = ({dispatch}) => {
 组件通过 getter 从 store 里读取数据：
 
 ```
-export default {
-    ...
+...
     vuex:{
         // 获取值
         getters:{
@@ -97,11 +94,59 @@ export default {
         }
         ...
     }
-    ...
-}
+...
 ```
 
 最终页面显示我们需要的浏览模式。
+
+还有一个值得注意的点是，在每次编译前，页面就会去读取 styleMode 的值，从而正确显示 cookies 里存储的状态：
+
+```
+...
+beforeCompile(){
+    // 编译开始前调用
+    document.body.className = this.styleMode
+}
+...
+```
+
+### 登录状态认证
+
+整个登录状态的流程处理跟上面浏览模式的流程是一样的，就不再多做说明。这里需要作说明的就是 API 数据的获取。
+
+```
+// ../vuex/actions.js
+
+import api from '../api'
+...
+export const getUserInfo = ({ dispatch }) => {
+    api.getMe().then(response => {
+        if(!response.ok){
+            return dispatch(types.USERINFO_FAILURE)
+        }
+        dispatch(types.USERINFO_SUCCESS, { user: response.data })
+    }, response => {
+        dispatch(types.USERINFO_FAILURE)
+    })
+}
+...
+```
+
+actions.js 引入了 ..\/api\/index.js，这里定义了获取数据的方法：
+
+```
+// ../api/index.js
+
+import {UserResource,AuthResource,ArticleResource,TagResource,MobileResource,CommentResource} from './resources'
+
+...
+getMe: function () {
+    return UserResource.get({id:'me'})
+}
+...
+```
+
+在 resources.js 里利用 [vue-resource](https://github.com/pagekit/vue-resource) 插件，通过 XMLHttpRequest 或 JSONP 发起请求并处理响应：
 
 
 
