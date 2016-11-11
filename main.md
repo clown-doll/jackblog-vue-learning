@@ -31,7 +31,19 @@
 
 主体部分内容，基本属于直接展示的，因此进入页面就要去获取数据，渲染显示。
 
-
-
-
+```
+...
+created(){
+    if(this.indexImg === ''){
+        this.getIndexImage()
+    }
+    if(this.tagList.length < 1){
+        this.getTagList()
+    }
+    if(this.articleList.length < 1){
+        this.getArticleList(this.options)
+    }
+}
+...
+```
 
