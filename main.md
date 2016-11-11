@@ -8,7 +8,7 @@
 <template>
     <div class="container-fluid main-box">
         <div class="row">
-            <!--首页大背景图-->
+            <!--主体侧边-->
             <Sidebar :index-img="indexImg"></Sidebar>
             <div class="col-sm-7 col-sm-offset-3 main-content">
                 <!--标签-->
