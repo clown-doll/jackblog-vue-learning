@@ -121,16 +121,3 @@ handleChange(options,isAdd=false){
 ...
 ```
 
-```
-// vuex/actions.js
-
-..
-//更改options
-export const changeOptions = ({ dispatch },options) => {
-    dispatch(types.CHANGE_OPTIONS, { options: options })
-}
-...
-```
-
-
-
