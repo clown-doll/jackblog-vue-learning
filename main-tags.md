@@ -13,7 +13,7 @@
 整个流程是这样的：先从父组件那边获取 isFetching ，判断是否在加载，如果在加载，显示 loading 图片，data 函数提供数据全新副本。
 
 ```
-// Home/tags.vue
+// components/Home/tags.vue
 
 <template>
     ...
@@ -71,7 +71,45 @@ export const getArticleList = ({ dispatch }, options, isAdd) => {
 
 ### 切换标签
 
+点击标签切换，主要完成两件事情：改变标签选中、加载对应标签文章列表。
 
+**改变标签**
+
+在 tags 组件里定一个了 changeTag\(\) 方法：
+
+```
+// components/Home/tags.vue
+
+...
+changeTag(tagId){
+    this.$parent.handleChange({'currentPage':1,'sortName':'','tagId':tagId})
+}
+...
+```
+
+`this.$parent` 指向其父组件，其定一个了 `handleChange()` 方法用于处理切换：
+
+```
+// components/Home/index.vue
+
+...
+handleChange(options,isAdd=false){
+    this.changeOptions(options)
+    this.getArticleList(this.options,isAdd)
+}
+...
+```
+
+```
+// vuex/actions.js
+
+..
+//更改options
+export const changeOptions = ({ dispatch },options) => {
+    dispatch(types.CHANGE_OPTIONS, { options: options })
+}
+...
+```
 
 
 
