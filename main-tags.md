@@ -81,6 +81,12 @@ export const getArticleList = ({ dispatch }, options, isAdd) => {
 // components/Home/tags.vue
 
 ...
+<a :class="{'active':(options.tagId == tag._id)}" @click.prevent="changeTag(tag._id)" href="javascript:;">
+    {{tag.name}}
+</a>
+...
+
+...
 changeTag(tagId){
     this.$parent.handleChange({'currentPage':1,'sortName':'','tagId':tagId})
 }
@@ -110,10 +116,6 @@ export const changeOptions = ({ dispatch },options) => {
 }
 ...
 ```
-
-
-
-
 
 
 
