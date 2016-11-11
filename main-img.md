@@ -1,4 +1,4 @@
-首页背景
+# 首页背景
 
 Sidebar 组件就是用来显示网站首页侧边背景及其内容说明的。
 
@@ -27,5 +27,15 @@ vuex:{
 ...
 ```
 
+sidebar 组建需要现实地用 `props` 选项声明：
 
+```
+// Home/sidebar.vue
+
+<script>
+export default {
+    props: ['indexImg']
+}
+</script>
+```
 
